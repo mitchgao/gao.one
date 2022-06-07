@@ -34,14 +34,14 @@ body, h1{
 }
 
 .container {
-	margin-left:  auto;
-	margin-right:  auto;
-	margin-top: 0px;
-	max-width: 1100px;
-	margin-bottom: 50px;
-	padding-right: 15px;
-	padding-left: 15px;
-	padding-bottom: 50px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 500px;
+      margin-top: -400px; /* half of you height */
+      width: 1000px;
+      margin-left: -500px ;/* half of you width */
+      border: 3px solid green;
 }
 
 
@@ -146,20 +146,18 @@ input[type="text"] {
 </head>
 <body>
 	<div class="container">
-		<svg style="width:100%;height:100%" viewBox="-165 100 900 200" overflow="inherit">
- 			<img src="./logo.png " width=30% height=auto alt="" style="vertical-align:middle">
-			</svg>
+ 			<img src="./logo.png " width=40% height=auto alt="" style="vertical-align:middle">
       <div autocomplete="off" method="post" action="">
 			  <input autocomplete="off" spellcheck="false" class="search" type="text" placeholder="Higher than high." value=""  id="textbox" >
 			</div>
     	<div class="links">
 			<a href="https://www.linkedin.com/in/mitchgao/" target="_self" title="Mitch" class="mg">Mitch</a>
 			<a href="https://www.linkedin.com/in/ningggao/" target="_self" title="Ning" class="ng">Ning</a>
-		</div>
+    </div>
 	</div>
   <footer>
     <p class="copyright">
-    Copyright &copy; <script>document.write(new Date().getFullYear());</script> Gao.One
+    Copyright &copy; <script>document.write(new Date().getFullYear());</script> Gao.On
     </p>
   </footer>
 </body>
