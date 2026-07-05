@@ -12,10 +12,10 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A lightweight English typing test.">
-  <meta name="keywords" content="typing test, monkeytype, gao dot one, english typing">
+  <meta name="description" content="Be free, and real.">
+  <meta name="keywords" content="gao, ming, ning, mitch, steven, gao dot one, usa, one, alvin, luca, inge">
   <meta name="theme-color" content="#323437">
-  <title>typing test</title>
+  <title>Gao | 高</title>
   <link rel="shortcut icon" type="image/x-icon" href="./favicon.png">
 
   <style>
@@ -42,6 +42,9 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       background: var(--bg);
       color: var(--text);
       font-family: "Lexend Deca", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -74,8 +77,7 @@
     }
 
     .page {
-      min-height: 100vh;
-      min-height: 100svh;
+      flex: 1;
       width: min(1000px, calc(100% - 2rem));
       margin: 0 auto;
       display: grid;
@@ -249,6 +251,97 @@
       align-items: start;
     }
 
+    .result-graph {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 0.65rem;
+      padding: 1rem 1rem 1.4rem;
+      border-radius: calc(var(--roundness) * 1.1);
+      background: color-mix(in srgb, var(--sub-alt) 90%, transparent);
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+
+    .result-graph .chartLegend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem 1rem;
+      align-items: center;
+      padding-top: 0.2rem;
+      color: var(--sub);
+      font-size: 0.82rem;
+    }
+
+    .result-graph .chartLegend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .result-graph .chartLegend .line {
+      width: 1rem;
+      height: 0.14rem;
+      border-radius: 999px;
+      background: currentColor;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .result-graph .chartLegend .cross {
+      width: 0.75rem;
+      height: 0.75rem;
+      display: inline-block;
+      position: relative;
+    }
+
+    .result-graph .chartLegend .cross::before,
+    .result-graph .chartLegend .cross::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0.75rem;
+      height: 1px;
+      background: currentColor;
+      transform-origin: center;
+    }
+
+    .result-graph .chartLegend .cross::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .result-graph .chartLegend .cross::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .result-graph .chartLegend .line.dashed {
+      background: linear-gradient(to right, currentColor 33%, rgba(255,255,255,0) 0%);
+      background-size: 0.28rem 0.14rem;
+      background-repeat: repeat-x;
+    }
+
+    .result-graph:not(.has-errors) .chartLegend .error-legend {
+      display: none;
+    }
+
+    .result-graph .graph-legend .dot {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 999px;
+      display: inline-block;
+      flex-shrink: 0;
+      background: currentColor;
+    }
+
+    .result-graph svg {
+      width: 100%;
+      height: 220px;
+      display: block;
+      border-radius: calc(var(--roundness) * 0.8);
+      background: rgba(255,255,255,0.02);
+      overflow: visible;
+    }
+
     .results.show {
       display: grid;
     }
@@ -323,6 +416,19 @@
       }
     }
 
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      color: var(--sub);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .footer .copyright {
+      margin: 0;
+      line-height: 1.5;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -378,9 +484,24 @@
           <span class="result-value" id="resultChars">0/0/0/0</span>
           <span class="result-sub">correct / incorrect / extra / missed</span>
         </div>
+
+        <div class="result-graph">
+          <svg id="graph" viewBox="0 0 520 220" role="img" aria-label="Typing speed graph"></svg>
+          <div class="chartLegend">
+            <span><span class="line" style="color: var(--main)"></span> wpm</span>
+            <span><span class="line" style="color: rgba(255,255,255,0.7)"></span> raw</span>
+            <span class="error-legend"><span class="cross" style="color: var(--error)"></span> errors</span>
+          </div>
+        </div>
       </section>
     </div>
   </main>
+
+  <footer class="footer">
+    <p class="copyright">
+      &copy; <script>document.write(new Date().getFullYear());</script> Gao.One
+    </p>
+  </footer>
 
   <textarea
     class="ghost-input"
@@ -404,6 +525,7 @@
     const resultAccEl = document.getElementById('resultAcc');
     const resultRawEl = document.getElementById('resultRaw');
     const resultCharsEl = document.getElementById('resultChars');
+    const graphEl = document.getElementById('graph');
     const modeTypeButtons = Array.from(document.querySelectorAll('.mode-type'));
     const optionGroup = document.getElementById('optionGroup');
     const restartButton = document.getElementById('restart');
@@ -472,6 +594,8 @@
     let done = false;
     let hasInteracted = false;
     let caretIdleTimer = 0;
+    let graphSamples = [];
+    let lastGraphSampleAt = 0;
 
     function randomWord() {
       return WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase();
@@ -492,7 +616,14 @@
     }
 
     function typedWords() {
-      return inputEl.value.split(' ');
+      const value = inputEl.value;
+      const parts = value.split(' ');
+
+      if (value.endsWith(' ')) {
+        return parts.filter((part, index) => part !== '' || index === parts.length - 1);
+      }
+
+      return parts.filter((part) => part !== '');
     }
 
     function promptText() {
@@ -610,6 +741,7 @@
       let extra = 0;
       let missed = 0;
       let raw = 0;
+      let wordErrors = 0;
 
       typed.forEach((typedWord, index) => {
         const expected = promptWords[index] || '';
@@ -625,8 +757,12 @@
           }
         }
 
-        if (index < typed.length - 1 && typedWord.length < expected.length) {
+        if (typedWord.length < expected.length && (index < typed.length - 1 || typedWord.length > 0)) {
           missed += expected.length - typedWord.length;
+        }
+
+        if (typedWord.length > 0 && typedWord !== expected) {
+          wordErrors += 1;
         }
       });
 
@@ -636,7 +772,7 @@
       const total = correct + incorrect + extra + missed;
       const acc = total ? Math.round((correct / total) * 100) : 100;
 
-      return { correct, incorrect, extra, missed, wpm, rawWpm, acc };
+      return { correct, incorrect, extra, missed, wordErrors, wpm, rawWpm, acc };
     }
 
     function isComplete() {
@@ -653,6 +789,7 @@
       if (mode === 'time') {
         const left = Math.max(0, Math.ceil(duration - elapsed()));
         timeEl.textContent = left;
+        addGraphSample();
         if (left <= 0 && startedAt) {
           finish();
         }
@@ -660,6 +797,7 @@
       }
 
       timeEl.textContent = `${typedProgress()}/${promptWords.length}`;
+      addGraphSample();
       if (isComplete() && startedAt) {
         finish();
       }
@@ -675,6 +813,131 @@
       caretIdleTimer = window.setTimeout(() => {
         setCaretActive(false);
       }, 300);
+    }
+
+    function renderGraph() {
+      const width = 520;
+      const height = 220;
+      const padding = 40;
+      const maxSamples = 24;
+      const points = graphSamples.slice(-maxSamples);
+
+      const renderAxes = (maxWpm, maxErrors) => {
+        const rows = 4;
+        const yStep = (height - padding * 2) / rows;
+        let axisLines = "";
+        axisLines += `<line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" stroke="rgba(255,255,255,0.18)" stroke-width="1"></line>`;
+        axisLines += `<line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="rgba(255,255,255,0.18)" stroke-width="1"></line>`;
+
+        for (let row = 0; row <= rows; row += 1) {
+          const y = padding + row * yStep;
+          const value = Math.round(maxWpm - (maxWpm / rows) * row);
+          axisLines += `
+            <line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="rgba(255,255,255,0.08)" stroke-width="1"></line>
+            <text x="${padding - 10}" y="${y + 4}" text-anchor="end" fill="rgba(255,255,255,0.45)" font-size="11">${value}</text>
+          `;
+        }
+
+        const xLabels = points.map((sample, index) => {
+          const x = padding + (index / Math.max(1, points.length - 1)) * (width - padding * 2);
+          const label = mode === 'time' ? Math.round(sample.elapsed) : index + 1;
+          return `
+            <text x="${x}" y="${height - padding + 20}" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">${label}</text>
+          `;
+        }).join('');
+
+        const leftAxisLabel = `
+          <text x="${padding - 28}" y="${height / 2}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11" transform="rotate(-90 ${padding - 28} ${height / 2})">Words per Minute</text>
+        `;
+
+        const hasErrors = maxErrors > 0;
+
+        const errorLabel = hasErrors ? `
+          <text x="${width - padding + 28}" y="${height / 2}" text-anchor="middle" fill="var(--error)" font-size="11" transform="rotate(90 ${width - padding + 28} ${height / 2})">Errors</text>
+        ` : "";
+
+        const xAxisTitle = `
+          <text x="${width / 2}" y="${height - padding + 38}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11">Seconds</text>
+        `;
+
+        const rightAxisLabels = hasErrors ? Array.from({ length: rows + 1 }, (_, row) => {
+          const y = padding + row * yStep;
+          const value = Math.round(maxErrors - (maxErrors / rows) * row);
+          return `
+            <text x="${width - padding + 10}" y="${y + 4}" text-anchor="start" fill="rgba(255,255,255,0.45)" font-size="11">${value}</text>
+          `;
+        }).join('') : "";
+
+        return axisLines + xLabels + xAxisTitle + leftAxisLabel + errorLabel + rightAxisLabels;
+      };
+
+      if (!points.length) {
+        graphEl.innerHTML = `
+          <rect x="0" y="0" width="${width}" height="${height}" rx="10" fill="rgba(255,255,255,0.03)"></rect>
+          <text x="${width / 2}" y="${height / 2 + 4}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="14">start typing to see your pace</text>
+        `;
+        return;
+      }
+
+      const maxWpm = Math.max(80, ...points.map((sample) => Math.max(sample.wpm, sample.rawWpm)));
+      const maxErrors = Math.max(...points.map((sample) => sample.errors));
+      const dataWidth = width - padding * 2;
+      const dataHeight = height - padding * 2;
+
+      const buildPoint = (value, maxValue) => {
+        return (sample, index) => {
+          const x = padding + (index / Math.max(1, points.length - 1)) * dataWidth;
+          const y = padding + dataHeight - (value(sample) / maxValue) * dataHeight;
+          return `${x},${y}`;
+        };
+      };
+
+      const wpmPath = points.map(buildPoint((sample) => sample.wpm, maxWpm)).join(' ');
+      const rawPath = points.map(buildPoint((sample) => sample.rawWpm, maxWpm)).join(' ');
+      const errorsPoints = points.map((sample, index) => {
+        const x = padding + (index / Math.max(1, points.length - 1)) * dataWidth;
+        const y = maxErrors > 0
+          ? padding + dataHeight - (sample.errors / maxErrors) * dataHeight
+          : padding + dataHeight;
+        return { x, y, value: sample.errors };
+      });
+
+      graphEl.innerHTML = `
+        <rect x="0" y="0" width="${width}" height="${height}" rx="10" fill="rgba(255,255,255,0.03)"></rect>
+        ${renderAxes(maxWpm, maxErrors)}
+        <polyline points="${rawPath}" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        <polyline points="${wpmPath}" fill="none" stroke="var(--main)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${points.map((sample, index) => {
+          const x = padding + (index / Math.max(1, points.length - 1)) * dataWidth;
+          const y = padding + dataHeight - (sample.wpm / maxWpm) * dataHeight;
+          return `<circle cx="${x}" cy="${y}" r="3.5" fill="var(--main)"></circle>`;
+        }).join('')}
+        ${errorsPoints.map(({ x, y, value }) => {
+          return value > 0
+            ? `<g transform="translate(${x},${y})"><line x1="-4" y1="-4" x2="4" y2="4" stroke="var(--error)" stroke-width="2"></line><line x1="-4" y1="4" x2="4" y2="-4" stroke="var(--error)" stroke-width="2"></line></g>`
+            : "";
+        }).join('')}
+      `;
+      graphEl.parentElement.classList.toggle('has-errors', maxErrors > 0);
+    }
+
+    function addGraphSample(force = false) {
+      if (!startedAt || done) return;
+      const elapsedSeconds = elapsed();
+      if (!force && elapsedSeconds - lastGraphSampleAt < 1) return;
+
+      const result = score();
+      graphSamples.push({
+        elapsed: elapsedSeconds,
+        wpm: result.wpm,
+        rawWpm: result.rawWpm,
+        errors: result.wordErrors,
+      });
+      if (graphSamples.length > 24) {
+        graphSamples.shift();
+      }
+      lastGraphSampleAt = elapsedSeconds;
+      renderGraph();
     }
 
     function start() {
@@ -696,6 +959,7 @@
       testEl.classList.remove('running', 'idle', 'focused');
       testEl.classList.add('done');
       setCaretActive(true);
+      addGraphSample(true);
 
       const result = score();
       resultWpmEl.textContent = result.wpm;
@@ -717,6 +981,9 @@
       wordsEl.scrollTop = 0;
       timeEl.textContent = mode === 'time' ? duration : `0/${promptWords.length}`;
       resultsEl.classList.remove('show');
+      graphSamples = [];
+      lastGraphSampleAt = 0;
+      renderGraph();
       testEl.className = 'test idle';
       setCaretActive(false);
       renderPrompt();
@@ -746,6 +1013,7 @@
 
       renderPrompt();
       updateStatus();
+      addGraphSample();
     }
 
     function focusTest() {
@@ -858,6 +1126,7 @@
     });
 
     renderOptions();
+    renderGraph();
     reset();
   </script>
 </body>
