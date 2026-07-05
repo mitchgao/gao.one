@@ -188,11 +188,15 @@
       border-radius: 999px;
       background: var(--caret);
       transform: translate3d(0, 0, 0);
-      transition: transform 80ms ease;
+      transition: transform 80ms ease, opacity 150ms ease;
+      opacity: 1;
       animation: caretBlink 1s ease-in-out infinite;
     }
 
-    .test.idle .caret,
+    .caret.active {
+      animation: none;
+    }
+
     .test.done .caret {
       opacity: 0;
     }
@@ -467,6 +471,7 @@
     let timer = 0;
     let done = false;
     let hasInteracted = false;
+    let caretIdleTimer = 0;
 
     function randomWord() {
       return WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase();
@@ -660,11 +665,24 @@
       }
     }
 
+    function setCaretActive(active) {
+      caretEl.classList.toggle('active', active);
+    }
+
+    function scheduleCaretIdle() {
+      window.clearTimeout(caretIdleTimer);
+      setCaretActive(true);
+      caretIdleTimer = window.setTimeout(() => {
+        setCaretActive(false);
+      }, 300);
+    }
+
     function start() {
       if (startedAt || done) return;
       startedAt = Date.now();
       testEl.classList.remove('idle');
       testEl.classList.add('running');
+      setCaretActive(true);
       timer = window.setInterval(updateStatus, 100);
       updateStatus();
     }
@@ -673,9 +691,11 @@
       if (done) return;
       done = true;
       window.clearInterval(timer);
+      window.clearTimeout(caretIdleTimer);
       inputEl.blur();
       testEl.classList.remove('running', 'idle', 'focused');
       testEl.classList.add('done');
+      setCaretActive(true);
 
       const result = score();
       resultWpmEl.textContent = result.wpm;
@@ -687,6 +707,7 @@
 
     function reset() {
       window.clearInterval(timer);
+      window.clearTimeout(caretIdleTimer);
       buildPrompt();
       startedAt = 0;
       timer = 0;
@@ -697,6 +718,7 @@
       timeEl.textContent = mode === 'time' ? duration : `0/${promptWords.length}`;
       resultsEl.classList.remove('show');
       testEl.className = 'test idle';
+      setCaretActive(false);
       renderPrompt();
       window.requestAnimationFrame(positionCaret);
     }
@@ -716,6 +738,12 @@
         start();
       }
 
+      if (inputEl.value.length > 0) {
+        scheduleCaretIdle();
+      } else {
+        setCaretActive(false);
+      }
+
       renderPrompt();
       updateStatus();
     }
@@ -726,11 +754,13 @@
       inputEl.focus();
       testEl.classList.add('focused');
       testEl.classList.remove('show-focus-message');
+      setCaretActive(startedAt > 0);
     }
 
     function blurTest() {
       if (!startedAt && !done) {
         testEl.classList.remove('focused');
+        setCaretActive(false);
         if (hasInteracted && document.activeElement !== restartButton) {
           testEl.classList.add('show-focus-message');
         }
