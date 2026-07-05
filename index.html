@@ -490,7 +490,6 @@
           <div class="chartLegend">
             <span><span class="line" style="color: var(--main)"></span> wpm</span>
             <span><span class="line" style="color: rgba(255,255,255,0.7)"></span> raw</span>
-            <span class="error-legend"><span class="cross" style="color: var(--error)"></span> errors</span>
           </div>
         </div>
       </section>
@@ -847,28 +846,14 @@
         }).join('');
 
         const leftAxisLabel = `
-          <text x="${padding - 28}" y="${height / 2}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11" transform="rotate(-90 ${padding - 28} ${height / 2})">Words per Minute</text>
+          <text x="${padding - 34}" y="${height / 2}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11" transform="rotate(-90 ${padding - 34} ${height / 2})">Words per Minute</text>
         `;
-
-        const hasErrors = maxErrors > 0;
-
-        const errorLabel = hasErrors ? `
-          <text x="${width - padding + 28}" y="${height / 2}" text-anchor="middle" fill="var(--error)" font-size="11" transform="rotate(90 ${width - padding + 28} ${height / 2})">Errors</text>
-        ` : "";
 
         const xAxisTitle = `
           <text x="${width / 2}" y="${height - padding + 38}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="11">Seconds</text>
         `;
 
-        const rightAxisLabels = hasErrors ? Array.from({ length: rows + 1 }, (_, row) => {
-          const y = padding + row * yStep;
-          const value = Math.round(maxErrors - (maxErrors / rows) * row);
-          return `
-            <text x="${width - padding + 10}" y="${y + 4}" text-anchor="start" fill="rgba(255,255,255,0.45)" font-size="11">${value}</text>
-          `;
-        }).join('') : "";
-
-        return axisLines + xLabels + xAxisTitle + leftAxisLabel + errorLabel + rightAxisLabels;
+        return axisLines + xLabels + xAxisTitle + leftAxisLabel;
       };
 
       if (!points.length) {
@@ -880,7 +865,6 @@
       }
 
       const maxWpm = Math.max(80, ...points.map((sample) => Math.max(sample.wpm, sample.rawWpm)));
-      const maxErrors = Math.max(...points.map((sample) => sample.errors));
       const dataWidth = width - padding * 2;
       const dataHeight = height - padding * 2;
 
@@ -894,17 +878,9 @@
 
       const wpmPath = points.map(buildPoint((sample) => sample.wpm, maxWpm)).join(' ');
       const rawPath = points.map(buildPoint((sample) => sample.rawWpm, maxWpm)).join(' ');
-      const errorsPoints = points.map((sample, index) => {
-        const x = padding + (index / Math.max(1, points.length - 1)) * dataWidth;
-        const y = maxErrors > 0
-          ? padding + dataHeight - (sample.errors / maxErrors) * dataHeight
-          : padding + dataHeight;
-        return { x, y, value: sample.errors };
-      });
-
       graphEl.innerHTML = `
         <rect x="0" y="0" width="${width}" height="${height}" rx="10" fill="rgba(255,255,255,0.03)"></rect>
-        ${renderAxes(maxWpm, maxErrors)}
+        ${renderAxes(maxWpm)}
         <polyline points="${rawPath}" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
         <polyline points="${wpmPath}" fill="none" stroke="var(--main)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
         ${points.map((sample, index) => {
@@ -912,13 +888,8 @@
           const y = padding + dataHeight - (sample.wpm / maxWpm) * dataHeight;
           return `<circle cx="${x}" cy="${y}" r="3.5" fill="var(--main)"></circle>`;
         }).join('')}
-        ${errorsPoints.map(({ x, y, value }) => {
-          return value > 0
-            ? `<g transform="translate(${x},${y})"><line x1="-4" y1="-4" x2="4" y2="4" stroke="var(--error)" stroke-width="2"></line><line x1="-4" y1="4" x2="4" y2="-4" stroke="var(--error)" stroke-width="2"></line></g>`
-            : "";
-        }).join('')}
       `;
-      graphEl.parentElement.classList.toggle('has-errors', maxErrors > 0);
+      graphEl.parentElement.classList.remove('has-errors');
     }
 
     function addGraphSample(force = false) {
@@ -927,11 +898,11 @@
       if (!force && elapsedSeconds - lastGraphSampleAt < 1) return;
 
       const result = score();
+
       graphSamples.push({
         elapsed: elapsedSeconds,
         wpm: result.wpm,
         rawWpm: result.rawWpm,
-        errors: result.wordErrors,
       });
       if (graphSamples.length > 24) {
         graphSamples.shift();
