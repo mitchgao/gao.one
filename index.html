@@ -14,34 +14,46 @@
 <title>Gao | 高</title>
 <link rel="shortcut icon " type="images/x-icon" href="./favicon.png">
 <meta name="description" content="Be free, and real.">
-<meta name="keywords" content="gao, ming, ning, mitch, steven, gao dot one, usa, one">
+<meta name="keywords" content="gao, gao dot one, united states, one, china, chinese, high">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <style type="text/css">
-body {
-	-webkit-animation: color_change 10s infinite alternate;
-	-moz-animation: color_change 10s infinite alternate;
-	-ms-animation: color_change 10s infinite alternate;
-	-o-animation: color_change 10s infinite alternate;
-	animation: color_change 10s infinite alternate;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-body, h1{
-	font-family: "Arial Rounded MT Bold", Arial, sans-serif;
-	font-weight: normal;
-	margin: 0;
-	padding: 0;
-	text-align: center;
+body {
+  -webkit-animation: color_change 10s infinite alternate;
+  -moz-animation: color_change 10s infinite alternate;
+  -ms-animation: color_change 10s infinite alternate;
+  -o-animation: color_change 10s infinite alternate;
+  animation: color_change 10s infinite alternate;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body, h1 {
+  font-family: "Arial Rounded MT Bold", Arial, sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .container {
-      position: absolute;
-      left: 50%;
-      top: 25%;
-      height: 50%;
-      margin-bottom: 25%; /* half of you height */
-      width: 90%;
-      margin-left: -45%;/* half of you width */
-      min-width: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 420px;
+  width: min(90vw, 900px);
+  min-width: 250px;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -99,14 +111,13 @@ p.copyright {
 
 .search {
       height: 44px;
-      width: 80%;
+      width: 100%;
       line-height: 44px;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
       border: none;
       margin-top: 50px;
-			text-align: center;
-			background:transparent;
-
+      text-align: center;
+      background: transparent;
     }
 
 .search:hover, .search:focus {
@@ -127,12 +138,17 @@ p.copyright {
 }
 
 input[type="text"] {
+    width: 100%;
     font-family: "Arial Rounded MT Bold", Arial, sans-serif;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #e94709;
     caret-color: transparent;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 12px;
 }
 
 ::selection {
@@ -142,31 +158,64 @@ input[type="text"] {
   background: #dd1126; /* Gecko Browsers */
 }
 
-img {
-    max-height: 200px;
-    min-height: 100px;
+.logo {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  max-height: 60vh;
+  overflow: visible;
+  margin: 0 auto;
+  transform-origin: center center;
+  will-change: transform;
 }
 
-img:hover {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
-  animation: shake 0.5s;
-
-  /* When the animation is finished, start again */
-  animation-iteration-count: infinite;
+.logo path {
+  fill: #272938;
+  stroke: #272938;
+  stroke-width: 28;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-@keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
+.logo:hover {
+  animation: float-hover 2.4s ease-in-out infinite;
+}
+
+@keyframes float-hover {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.01);
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: calc(100vw - 32px);
+    min-width: auto;
+    padding: 0 16px;
+  }
+
+  .logo {
+    max-width: 100%;
+    max-height: 50vh;
+  }
+
+  .search {
+    width: 100%;
+    margin-top: 36px;
+    margin-bottom: 32px;
+  }
+
+  input[type="text"] {
+    font-size: 16px;
+  }
+
+  p.copyright {
+    font-size: 11px;
+  }
 }
 
 
@@ -174,9 +223,15 @@ img:hover {
 </head>
 <body>
 	<div class="container">
- 			<img src="./logo.gif " width=auto height=50% alt="" style="vertical-align:middle">
+      <svg class="logo" viewBox="2005 0 10510 18101" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle">
+          <title id="logoTitle">Gao stylized traditional character logo</title>
+          <g xmlns="http://www.w3.org/2000/svg" transform="translate(0,18101) scale(1,-1)" fill="#000000" stroke="none">
+            <path d="M6783 18089 c-108 -14 -153 -51 -173 -142 -8 -38 -50 -384 -50 -413 0 -2 -854 -4 -1898 -4 -1701 0 -1900 -2 -1920 -16 l-22 -15 0 -578 c0 -435 3 -580 12 -589 9 -9 256 -12 1049 -12 l1036 0 8 -1401 c8 -1497 -3 -8717 -14 -8723 -3 -2 -296 1 -651 6 -1014 17 -2108 16 -2147 -1 l-33 -13 0 -2769 c0 -2727 0 -2768 19 -2779 27 -14 1085 -14 1112 0 19 11 19 46 19 2210 l0 2200 4054 0 4054 0 6 -31 c3 -17 6 -1007 6 -2200 0 -2133 0 -2168 19 -2179 27 -14 1175 -14 1202 0 19 11 19 52 19 2773 0 1722 -4 2768 -10 2777 -8 13 -80 16 -492 23 -529 9 -1978 1 -2233 -11 -88 -4 -169 -5 -181 -1 l-21 7 -9 2084 c-9 2173 -8 5017 4 6913 l7 1110 1100 5 1100 5 8 49 c10 62 5 1067 -6 1084 -7 9 -404 12 -1930 12 -1057 0 -1928 4 -1935 8 -8 5 -20 70 -32 173 -25 208 -36 260 -63 301 -60 88 -159 109 -681 138 -199 11 -243 11 -333 -1z m1294 -1788 c146 -20 205 -59 218 -144 22 -145 -83 -234 -321 -272 -227 -38 -809 -37 -1359 0 -443 30 -535 70 -535 230 0 145 63 177 390 199 136 8 1530 -2 1607 -13z m-292 -1671 c365 -13 454 -32 493 -104 23 -43 23 -160 -1 -204 -25 -47 -98 -78 -217 -93 -135 -17 -1350 -24 -1582 -10 -346 22 -398 50 -398 209 0 156 73 188 470 201 321 11 940 12 1235 1z m-30 -1690 c299 -16 511 -46 536 -76 9 -11 5 -20 -18 -43 -89 -89 -447 -128 -1063 -117 -375 6 -543 17 -796 51 -253 35 -358 69 -325 109 6 8 31 18 54 24 70 17 293 42 452 51 224 12 943 12 1160 1z m-50 -1470 c380 -14 510 -34 561 -85 69 -69 16 -159 -109 -184 -175 -36 -719 -52 -1347 -40 -589 11 -730 41 -730 154 0 73 76 115 245 135 217 26 939 37 1380 20z m105 -1560 c197 -13 397 -36 438 -51 53 -18 53 -67 0 -156 -30 -51 -140 -78 -413 -105 -195 -18 -1346 -19 -1493 0 -184 24 -262 61 -262 125 0 123 156 174 615 201 118 7 963 -3 1115 -14z m-320 -1520 c599 -36 831 -95 766 -196 -68 -103 -569 -153 -1261 -125 -704 29 -915 77 -915 207 0 69 76 107 248 124 111 11 932 4 1162 -10z m810 -1864 l0 -313 -46 -7 c-60 -8 -2087 -8 -2136 0 l-38 7 0 313 0 314 1110 0 1110 0 0 -314z" style="fill: rgb(39, 41, 56);"/>
+            <path d="M3885 4606 c-14 -21 -15 -232 -13 -1983 3 -1644 5 -1963 17 -1976 12 -16 255 -17 3302 -17 3241 0 3288 0 3299 19 7 13 10 648 10 1981 0 1333 -3 1968 -10 1981 -11 19 -58 19 -3300 19 l-3290 0 -15 -24z m4335 -1206 c217 -5 550 -18 740 -30 190 -11 355 -20 368 -20 l22 0 0 -730 0 -730 -2099 0 c-1199 0 -2102 4 -2105 9 -3 5 -15 109 -27 232 -17 185 -20 267 -16 474 5 241 41 733 55 747 4 4 403 16 887 28 1281 30 1615 33 2175 20z" style="fill: rgb(39, 41, 56);"/>
+          </g>
+        </svg>
       <div autocomplete="off" method="post" action="">
-			  <input autocomplete="off" spellcheck="false" class="search" type="text" placeholder="Shhh... Be quiet." value=""  id="textbox" >
+			  <input autocomplete="off" spellcheck="false" class="search" type="text" placeholder="GAO" value=""  id="textbox" >
 			</div>
 	</div>
   <footer>
