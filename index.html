@@ -1,201 +1,834 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SSL9QEVDPK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSL9QEVDPK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SSL9QEVDPK');
+  </script>
 
-  gtag('config', 'G-SSL9QEVDPK');
-</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A lightweight English typing test.">
+  <meta name="keywords" content="typing test, monkeytype, gao dot one, english typing">
+  <meta name="theme-color" content="#323437">
+  <title>typing test</title>
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.png">
 
-<title>Gao | 高</title>
-<link rel="shortcut icon " type="images/x-icon" href="./favicon.png">
-<meta name="description" content="Be free, and real.">
-<meta name="keywords" content="gao, ming, ning, mitch, steven, gao dot one, usa, one">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<style type="text/css">
-body {
-	-webkit-animation: color_change 10s infinite alternate;
-	-moz-animation: color_change 10s infinite alternate;
-	-ms-animation: color_change 10s infinite alternate;
-	-o-animation: color_change 10s infinite alternate;
-	animation: color_change 10s infinite alternate;
-}
-
-body, h1{
-	font-family: "Arial Rounded MT Bold", Arial, sans-serif;
-	font-weight: normal;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-}
-
-.container {
-      position: absolute;
-      left: 50%;
-      top: 25%;
-      height: 50%;
-      margin-bottom: 25%; /* half of you height */
-      width: 90%;
-      margin-left: -45%;/* half of you width */
-      min-width: 250px;
-}
-
-
-h1 { font-size: 9px; font-weight: bold; margin: 20px 0 20px 0; color: #ff602c;}
-
-footer {
-  position: fixed;
-  bottom:1%;
-  width: 100%;
-}
-
-p.copyright {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    bottom:0;
-    font-size: 10px;
-    color: #2a3b4c;
-}
-
-@-webkit-keyframes color_change { from { background-color: #ececec; } to { background-color: #ececec; }}
-@-moz-keyframes color_change { from { background-color: #ececec; } to { background-color: #ececec; }}
-@-ms-keyframes color_change { from { background-color: #ececec; } to { background-color: #ececec; }}
-@-o-keyframes color_change { from { background-color: #ececec; } to { background-color: #ececec; }}
-@keyframes color_change { from { background-color: #ececec; } to { background-color: #ececec; }}
-
-
-.links a{
-	display: inline-block;
-	font-size: 20px;
-	text-align: center;
-	text-decoration: none;
-	margin-left:  auto;
-	margin-right:  auto;
-	margin-top: auto;
-	margin-bottom: 50px;
-	width: 65px;
-	height: 65px;
-	line-height: 65px;
-	-moz-border-radius: 50%;
-
-	border-radius: 50%;
-	-webkit-transition: all .3s;
-	-moz-transition: all .3s;
-	-o-transition: all .3s;
-	-ms-transition: all .3s;
-	transition: all .3s
-}
-
-.links .mg{ color: #00afba;border: 2px solid #00afba;}
-.links .mg:hover{ color: #2a3b4c;background: #00afba;}
-
-.links .ng{ color: #fea114;border: 2px solid #fea114;}
-.links .ng:hover{ color: #2a3b4c;background: #fea114;}
-
-.search {
-      height: 44px;
-      width: 80%;
-      line-height: 44px;
-      margin-bottom: 50px;
-      border: none;
-      margin-top: 50px;
-			text-align: center;
-			background:transparent;
-
+  <style>
+    :root {
+      --bg: #323437;
+      --main: #e2b714;
+      --caret: #e2b714;
+      --text: #d1d0c5;
+      --sub: #646669;
+      --sub-alt: #2c2e31;
+      --error: #ca4754;
+      --error-extra: #7e2a33;
+      --roundness: 8px;
     }
 
-.search:hover, .search:focus {
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Lexend Deca", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: var(--roundness);
+      background: transparent;
+      color: var(--sub);
+      font: inherit;
+      font-size: 0.85rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 120ms ease, background 120ms ease;
+    }
+
+    button:hover,
+    button:focus-visible {
+      color: var(--text);
       outline: none;
     }
 
- input::-ms-input-placeholder{
-	  	text-align: center;
-			font-size: 20px;
-			font-weight: bold;
-			color: #ff602c;
- }
- input::-webkit-input-placeholder{
-		 text-align: center;
-		 font-size: 20px;
-		 font-weight: bold;
-		 color: #ff602c;
-}
+    button.active,
+    button[aria-pressed="true"] {
+      color: var(--main);
+    }
 
-input[type="text"] {
-    font-family: "Arial Rounded MT Bold", Arial, sans-serif;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: #e94709;
-    caret-color: transparent;
-}
+    .page {
+      min-height: 100vh;
+      min-height: 100svh;
+      width: min(1000px, calc(100% - 2rem));
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: 1fr auto 1fr;
+      padding: 2rem 0;
+    }
 
-::selection {
-  background: #dd1126; /* WebKit/Blink Browsers */
-}
-::-moz-selection {
-  background: #dd1126; /* Gecko Browsers */
-}
+    .wrap {
+      grid-row: 2;
+      display: grid;
+      gap: 2rem;
+    }
 
-img {
-    max-height: 200px;
-    min-height: 100px;
-}
+    .config {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      min-height: 2.25rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: var(--roundness);
+      background: var(--sub-alt);
+      color: var(--sub);
+    }
 
-img:hover {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
-  animation: shake 0.5s;
+    .config-group {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+    }
 
-  /* When the animation is finished, start again */
-  animation-iteration-count: infinite;
-}
+    .divider {
+      width: 0.25rem;
+      height: 0.25rem;
+      border-radius: 999px;
+      background: var(--sub);
+      opacity: 0.7;
+    }
 
-@keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
+    .config button {
+      padding: 0.5rem 0.42rem;
+    }
 
+    .test {
+      position: relative;
+      min-height: 10.4rem;
+      cursor: text;
+    }
 
-</style>
+    .time {
+      height: 2.1rem;
+      color: var(--main);
+      font-size: 2rem;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+
+    .test.running .time {
+      opacity: 1;
+    }
+
+    .words {
+      position: relative;
+      height: 9.8rem;
+      overflow: hidden;
+      color: var(--sub);
+      font-size: clamp(1.55rem, 4.5vw, 2rem);
+      line-height: 1.6;
+      font-weight: 400;
+      word-break: break-word;
+      user-select: none;
+      transition: opacity 150ms ease, filter 150ms ease;
+    }
+
+    .word {
+      display: inline-block;
+      margin: 0 0.55rem 0.2rem 0;
+    }
+
+    .char {
+      display: inline-block;
+      min-width: 0.45ch;
+      border-bottom: 2px solid transparent;
+    }
+
+    .char.correct {
+      color: var(--text);
+    }
+
+    .char.incorrect {
+      color: var(--error);
+    }
+
+    .char.extra {
+      color: var(--error-extra);
+    }
+
+    .char.space.incorrect {
+      border-color: var(--error);
+    }
+
+    .caret {
+      position: absolute;
+      left: 0;
+      top: 2.1rem;
+      width: 0.18rem;
+      height: 2rem;
+      border-radius: 999px;
+      background: var(--caret);
+      transform: translate3d(0, 0, 0);
+      transition: transform 80ms ease;
+      animation: caretBlink 1s ease-in-out infinite;
+    }
+
+    .test.idle .caret,
+    .test.done .caret {
+      opacity: 0;
+    }
+
+    .test.done {
+      display: none;
+    }
+
+    .focus-message {
+      position: absolute;
+      inset: 2.1rem 0 0;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      font-size: 1rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+
+    .test.show-focus-message .words {
+      filter: blur(4px);
+      opacity: 0.28;
+    }
+
+    .test.show-focus-message .focus-message {
+      opacity: 1;
+    }
+
+    .restart {
+      justify-self: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+      color: var(--sub);
+      font-size: 1.25rem;
+    }
+
+    .restart:focus,
+    .restart:focus-visible {
+      color: var(--main);
+      outline: none;
+    }
+
+    .results {
+      display: none;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .results.show {
+      display: grid;
+    }
+
+    .result-item {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .result-label {
+      color: var(--sub);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .result-value {
+      color: var(--main);
+      font-size: clamp(2.6rem, 8vw, 4.5rem);
+      line-height: 0.95;
+    }
+
+    .result-sub {
+      color: var(--sub);
+      font-size: 0.85rem;
+    }
+
+    .ghost-input {
+      position: fixed;
+      inset: auto auto 0 0;
+      width: 1px;
+      height: 1px;
+      border: 0;
+      padding: 0;
+      opacity: 0.01;
+      color: transparent;
+      background: transparent;
+      resize: none;
+    }
+
+    @keyframes caretBlink {
+      0%, 55% {
+        opacity: 1;
+      }
+      56%, 100% {
+        opacity: 0;
+      }
+    }
+
+    ::selection {
+      background: var(--main);
+      color: var(--bg);
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(100% - 1.5rem, 1000px);
+        padding-top: 1.25rem;
+      }
+
+      .config {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 0.35rem 0.65rem;
+      }
+
+      .words {
+        height: 12.6rem;
+      }
+
+      .results {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
-	<div class="container">
- 			<img src="./logo.gif " width=auto height=50% alt="" style="vertical-align:middle">
-      <div autocomplete="off" method="post" action="">
-			  <input autocomplete="off" spellcheck="false" class="search" type="text" placeholder="Shhh... Be quiet." value=""  id="textbox" >
-			</div>
-	</div>
-  <footer>
-    <p class="copyright">
-    &copy; <script>document.write(new Date().getFullYear());</script> Gao.One
-    </p>
-  </footer>
-</body>
+  <main class="page">
+    <div class="wrap">
+      <nav class="config" aria-label="Typing test settings">
+        <div class="config-group" aria-label="Mode">
+          <button class="mode-type" type="button" data-mode="time" aria-pressed="true">time</button>
+          <button class="mode-type" type="button" data-mode="words" aria-pressed="false">words</button>
+          <button class="mode-type" type="button" data-mode="quote" aria-pressed="false">quote</button>
+        </div>
+        <span class="divider" aria-hidden="true"></span>
+        <div class="config-group" id="optionGroup" aria-label="Mode options">
+          <button class="option-button" type="button" data-value="15" aria-pressed="false">15</button>
+          <button class="option-button" type="button" data-value="30" aria-pressed="true">30</button>
+          <button class="option-button" type="button" data-value="60" aria-pressed="false">60</button>
+          <button class="option-button" type="button" data-value="120" aria-pressed="false">120</button>
+        </div>
+      </nav>
 
-<script>
-var textBox = document.getElementById("textbox");
-textBox.addEventListener("keypress", function (event) {
-var Value = document.getElementById("textbox").value;
-						var Address = "https://www.google.com/search?q=" + Value;
-            if (event.keyCode === 13) {
-								window.open(Address,"_self");
-                return false;
+      <section class="test idle" id="test" aria-label="Typing test">
+        <div class="time" id="time">30</div>
+        <div class="words" id="words"></div>
+        <div class="caret" id="caret" aria-hidden="true"></div>
+        <div class="focus-message">click here or press any key to focus</div>
+      </section>
+
+      <button class="restart" id="restart" type="button" aria-label="Restart test" title="Restart">↻</button>
+
+      <section class="results" id="results" aria-live="polite">
+        <div class="result-item">
+          <span class="result-label">wpm</span>
+          <span class="result-value" id="resultWpm">0</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">acc</span>
+          <span class="result-value" id="resultAcc">100%</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">raw</span>
+          <span class="result-value" id="resultRaw">0</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">characters</span>
+          <span class="result-value" id="resultChars">0/0/0/0</span>
+          <span class="result-sub">correct / incorrect / extra / missed</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <textarea
+    class="ghost-input"
+    id="input"
+    autocapitalize="off"
+    autocomplete="off"
+    autocorrect="off"
+    inputmode="text"
+    spellcheck="false"
+    aria-label="Typing input"
+  ></textarea>
+
+  <script>
+    const wordsEl = document.getElementById('words');
+    const inputEl = document.getElementById('input');
+    const testEl = document.getElementById('test');
+    const caretEl = document.getElementById('caret');
+    const timeEl = document.getElementById('time');
+    const resultsEl = document.getElementById('results');
+    const resultWpmEl = document.getElementById('resultWpm');
+    const resultAccEl = document.getElementById('resultAcc');
+    const resultRawEl = document.getElementById('resultRaw');
+    const resultCharsEl = document.getElementById('resultChars');
+    const modeTypeButtons = Array.from(document.querySelectorAll('.mode-type'));
+    const optionGroup = document.getElementById('optionGroup');
+    const restartButton = document.getElementById('restart');
+
+    const WORDS = [
+      'the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 'that',
+      'he', 'was', 'for', 'on', 'are', 'with', 'as', 'I', 'his', 'they',
+      'be', 'at', 'one', 'have', 'this', 'from', 'or', 'had', 'by', 'hot',
+      'word', 'but', 'what', 'some', 'we', 'can', 'out', 'other', 'were', 'all',
+      'there', 'when', 'up', 'use', 'your', 'how', 'said', 'an', 'each', 'she',
+      'which', 'do', 'their', 'time', 'if', 'will', 'way', 'about', 'many', 'then',
+      'them', 'write', 'would', 'like', 'so', 'these', 'her', 'long', 'make', 'thing',
+      'see', 'him', 'two', 'has', 'look', 'more', 'day', 'could', 'go', 'come',
+      'did', 'my', 'sound', 'no', 'most', 'number', 'who', 'over', 'know', 'water',
+      'than', 'call', 'first', 'people', 'may', 'down', 'side', 'been', 'now', 'find',
+      'any', 'new', 'work', 'part', 'take', 'get', 'place', 'made', 'live', 'where',
+      'after', 'back', 'little', 'only', 'round', 'man', 'year', 'came', 'show', 'every',
+      'good', 'me', 'give', 'our', 'under', 'name', 'very', 'through', 'just', 'form',
+      'much', 'great', 'think', 'say', 'help', 'low', 'line', 'before', 'turn', 'cause',
+      'same', 'mean', 'differ', 'move', 'right', 'boy', 'old', 'too', 'does', 'tell',
+      'sentence', 'set', 'three', 'want', 'air', 'well', 'also', 'play', 'small', 'end',
+      'put', 'home', 'read', 'hand', 'port', 'large', 'spell', 'add', 'even', 'land',
+      'here', 'must', 'big', 'high', 'such', 'follow', 'act', 'why', 'ask', 'men',
+      'change', 'went', 'light', 'kind', 'off', 'need', 'house', 'picture', 'try', 'us',
+      'again', 'animal', 'point', 'mother', 'world', 'near', 'build', 'self', 'earth', 'father'
+    ];
+
+    const QUOTES = {
+      short: [
+        'the only way out is through',
+        'simplicity is the ultimate sophistication',
+        'stay hungry stay foolish',
+        'make it work make it right make it fast'
+      ],
+      medium: [
+        'it is not enough to be busy so are the ants the question is what are we busy about',
+        'the future belongs to those who learn more skills and combine them in creative ways',
+        'great things are done by a series of small things brought together'
+      ],
+      long: [
+        'the reasonable person adapts themselves to the world the unreasonable one persists in trying to adapt the world to themselves therefore all progress depends on the unreasonable person',
+        'you cannot connect the dots looking forward you can only connect them looking backward so you have to trust that the dots will somehow connect in your future',
+        'success is not final failure is not fatal it is the courage to continue that counts'
+      ]
+    };
+
+    const OPTIONS = {
+      time: [15, 30, 60, 120],
+      words: [10, 25, 50, 100],
+      quote: ['short', 'medium', 'long']
+    };
+
+    const optionValue = {
+      time: 30,
+      words: 25,
+      quote: 'medium'
+    };
+
+    let mode = 'time';
+    let duration = 30;
+    let wordCount = 25;
+    let quoteLength = 'medium';
+    let promptWords = [];
+    let startedAt = 0;
+    let timer = 0;
+    let done = false;
+    let hasInteracted = false;
+
+    function randomWord() {
+      return WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase();
+    }
+
+    function buildPrompt() {
+      if (mode === 'quote') {
+        const quotes = QUOTES[quoteLength];
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        promptWords = quote.split(' ');
+        return;
+      }
+
+      const count = mode === 'words'
+        ? wordCount
+        : duration === 120 ? 420 : duration === 60 ? 240 : duration === 30 ? 140 : 80;
+      promptWords = Array.from({ length: count }, randomWord);
+    }
+
+    function typedWords() {
+      return inputEl.value.split(' ');
+    }
+
+    function promptText() {
+      return promptWords.join(' ');
+    }
+
+    function typedProgress() {
+      const typed = typedWords();
+      const lastIndex = promptWords.length - 1;
+      let attempted = typed.filter((word) => word.length > 0).length;
+
+      if (typed.length > promptWords.length) {
+        attempted = promptWords.length;
+      }
+
+      const lastTyped = typed[lastIndex] || '';
+      if (typed.length >= promptWords.length && lastTyped.length >= promptWords[lastIndex].length) {
+        attempted = promptWords.length;
+      }
+
+      return Math.min(attempted, promptWords.length);
+    }
+
+    function renderPrompt() {
+      const typed = typedWords();
+      const fragment = document.createDocumentFragment();
+
+      promptWords.forEach((word, wordIndex) => {
+        const wordEl = document.createElement('span');
+        const typedWord = typed[wordIndex] || '';
+        const max = Math.max(word.length, typedWord.length);
+        wordEl.className = 'word';
+        wordEl.dataset.word = wordIndex;
+
+        for (let charIndex = 0; charIndex < max; charIndex += 1) {
+          const charEl = document.createElement('span');
+          const expected = word[charIndex];
+          const actual = typedWord[charIndex];
+          charEl.className = 'char';
+          charEl.dataset.word = wordIndex;
+          charEl.dataset.char = charIndex;
+
+          if (actual != null && expected == null) {
+            charEl.textContent = actual;
+            charEl.classList.add('extra');
+          } else {
+            charEl.textContent = expected || '';
+            if (actual == null) {
+              charEl.classList.add('pending');
+            } else if (actual === expected) {
+              charEl.classList.add('correct');
+            } else {
+              charEl.classList.add('incorrect');
             }
-        });
-</script>
+          }
 
+          wordEl.appendChild(charEl);
+        }
+
+        if (typedWord.length === 0 && word.length === 0) {
+          wordEl.textContent = word;
+        }
+
+        fragment.appendChild(wordEl);
+      });
+
+      wordsEl.replaceChildren(fragment);
+      positionCaret();
+    }
+
+    function positionCaret() {
+      const typed = typedWords();
+      const wordIndex = Math.max(0, typed.length - 1);
+      const charIndex = typed[wordIndex] ? typed[wordIndex].length : 0;
+      const wordEl = wordsEl.querySelector(`[data-word="${wordIndex}"]`);
+      if (!wordEl) return;
+
+      const charEl = wordsEl.querySelector(`[data-word="${wordIndex}"][data-char="${charIndex}"]`);
+      const previousCharEl = wordsEl.querySelector(`[data-word="${wordIndex}"][data-char="${charIndex - 1}"]`);
+      const wordsBox = wordsEl.getBoundingClientRect();
+      let x = wordEl.getBoundingClientRect().left - wordsBox.left;
+      let y = wordEl.getBoundingClientRect().top - wordsBox.top + wordsEl.scrollTop;
+      let height = parseFloat(getComputedStyle(wordsEl).fontSize) * 1.2;
+
+      if (charEl) {
+        const box = charEl.getBoundingClientRect();
+        x = box.left - wordsBox.left;
+        y = box.top - wordsBox.top + wordsEl.scrollTop;
+        height = box.height;
+      } else if (previousCharEl) {
+        const box = previousCharEl.getBoundingClientRect();
+        x = box.right - wordsBox.left;
+        y = box.top - wordsBox.top + wordsEl.scrollTop;
+        height = box.height;
+      }
+
+      caretEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      caretEl.style.height = height + 'px';
+
+      if (y - wordsEl.scrollTop > wordsEl.clientHeight - height * 2.5) {
+        wordsEl.scrollTop = y - height * 2.5;
+      }
+    }
+
+    function elapsed() {
+      if (!startedAt) return 0;
+      const value = (Date.now() - startedAt) / 1000;
+      return mode === 'time' ? Math.min(duration, value) : value;
+    }
+
+    function score() {
+      const typed = typedWords();
+      let correct = 0;
+      let incorrect = 0;
+      let extra = 0;
+      let missed = 0;
+      let raw = 0;
+
+      typed.forEach((typedWord, index) => {
+        const expected = promptWords[index] || '';
+        raw += typedWord.length;
+
+        for (let i = 0; i < typedWord.length; i += 1) {
+          if (expected[i] == null) {
+            extra += 1;
+          } else if (typedWord[i] === expected[i]) {
+            correct += 1;
+          } else {
+            incorrect += 1;
+          }
+        }
+
+        if (index < typed.length - 1 && typedWord.length < expected.length) {
+          missed += expected.length - typedWord.length;
+        }
+      });
+
+      const minutes = Math.max(elapsed() / 60, 1 / 60);
+      const wpm = Math.round(correct / 5 / minutes);
+      const rawWpm = Math.round(raw / 5 / minutes);
+      const total = correct + incorrect + extra + missed;
+      const acc = total ? Math.round((correct / total) * 100) : 100;
+
+      return { correct, incorrect, extra, missed, wpm, rawWpm, acc };
+    }
+
+    function isComplete() {
+      if (mode === 'time') return false;
+
+      const typed = typedWords();
+      const lastIndex = promptWords.length - 1;
+      const lastTyped = typed[lastIndex] || '';
+      return typed.length > promptWords.length
+        || (typed.length >= promptWords.length && lastTyped.length >= promptWords[lastIndex].length);
+    }
+
+    function updateStatus() {
+      if (mode === 'time') {
+        const left = Math.max(0, Math.ceil(duration - elapsed()));
+        timeEl.textContent = left;
+        if (left <= 0 && startedAt) {
+          finish();
+        }
+        return;
+      }
+
+      timeEl.textContent = `${typedProgress()}/${promptWords.length}`;
+      if (isComplete() && startedAt) {
+        finish();
+      }
+    }
+
+    function start() {
+      if (startedAt || done) return;
+      startedAt = Date.now();
+      testEl.classList.remove('idle');
+      testEl.classList.add('running');
+      timer = window.setInterval(updateStatus, 100);
+      updateStatus();
+    }
+
+    function finish() {
+      if (done) return;
+      done = true;
+      window.clearInterval(timer);
+      inputEl.blur();
+      testEl.classList.remove('running', 'idle', 'focused');
+      testEl.classList.add('done');
+
+      const result = score();
+      resultWpmEl.textContent = result.wpm;
+      resultAccEl.textContent = result.acc + '%';
+      resultRawEl.textContent = result.rawWpm;
+      resultCharsEl.textContent = `${result.correct}/${result.incorrect}/${result.extra}/${result.missed}`;
+      resultsEl.classList.add('show');
+    }
+
+    function reset() {
+      window.clearInterval(timer);
+      buildPrompt();
+      startedAt = 0;
+      timer = 0;
+      done = false;
+      hasInteracted = false;
+      inputEl.value = '';
+      wordsEl.scrollTop = 0;
+      timeEl.textContent = mode === 'time' ? duration : `0/${promptWords.length}`;
+      resultsEl.classList.remove('show');
+      testEl.className = 'test idle';
+      renderPrompt();
+      window.requestAnimationFrame(positionCaret);
+    }
+
+    function handleInput() {
+      if (done) return;
+
+      inputEl.value = inputEl.value
+        .replace(/\n/g, ' ')
+        .replace(/\s{2,}/g, ' ');
+
+      if (mode !== 'time' && inputEl.value.length > promptText().length) {
+        inputEl.value = inputEl.value.slice(0, promptText().length);
+      }
+
+      if (inputEl.value.length > 0) {
+        start();
+      }
+
+      renderPrompt();
+      updateStatus();
+    }
+
+    function focusTest() {
+      if (done) return;
+      hasInteracted = true;
+      inputEl.focus();
+      testEl.classList.add('focused');
+      testEl.classList.remove('show-focus-message');
+    }
+
+    function blurTest() {
+      if (!startedAt && !done) {
+        testEl.classList.remove('focused');
+        if (hasInteracted && document.activeElement !== restartButton) {
+          testEl.classList.add('show-focus-message');
+        }
+      }
+    }
+
+    testEl.addEventListener('click', focusTest);
+    inputEl.addEventListener('focus', () => {
+      testEl.classList.add('focused');
+      testEl.classList.remove('show-focus-message');
+    });
+    inputEl.addEventListener('blur', blurTest);
+    inputEl.addEventListener('input', handleInput);
+    restartButton.addEventListener('focus', () => testEl.classList.remove('show-focus-message'));
+    window.addEventListener('resize', positionCaret);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.target.closest && event.target.closest('button')) return;
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        testEl.classList.remove('show-focus-message');
+        inputEl.blur();
+        restartButton.focus();
+        return;
+      }
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === 'Escape') {
+        reset();
+        return;
+      }
+      if (document.activeElement !== inputEl && event.key.length === 1) {
+        event.preventDefault();
+        focusTest();
+        inputEl.value += event.key;
+        handleInput();
+        return;
+      }
+      focusTest();
+    });
+
+    function renderOptions() {
+      const fragment = document.createDocumentFragment();
+      OPTIONS[mode].forEach((value) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.type = 'button';
+        button.dataset.value = value;
+        button.setAttribute('aria-pressed', String(optionValue[mode] === value));
+        button.textContent = value;
+        fragment.appendChild(button);
+      });
+      optionGroup.replaceChildren(fragment);
+    }
+
+    function applyMode(nextMode) {
+      mode = nextMode;
+      duration = optionValue.time;
+      wordCount = optionValue.words;
+      quoteLength = optionValue.quote;
+      modeTypeButtons.forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.mode === mode));
+      });
+      renderOptions();
+      reset();
+      focusTest();
+    }
+
+    modeTypeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        applyMode(button.dataset.mode);
+      });
+    });
+
+    optionGroup.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+
+      const value = mode === 'quote' ? button.dataset.value : Number(button.dataset.value);
+      optionValue[mode] = value;
+      duration = optionValue.time;
+      wordCount = optionValue.words;
+      quoteLength = optionValue.quote;
+
+      Array.from(optionGroup.querySelectorAll('button')).forEach((option) => {
+        option.setAttribute('aria-pressed', String(option === button));
+      });
+
+      reset();
+      focusTest();
+    });
+
+    restartButton.addEventListener('click', () => {
+      reset();
+      focusTest();
+    });
+
+    renderOptions();
+    reset();
+  </script>
+</body>
 </html>
